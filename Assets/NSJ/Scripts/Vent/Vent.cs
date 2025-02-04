@@ -16,7 +16,7 @@ public class Vent : MonoBehaviourPun
     [SerializeField] private Transform _canvas;
     [SerializeField] private GameObject _dirArrowPrefab;
 
-    private Dictionary<GameObject, Vent> _arrowDic = new Dictionary<GameObject, Vent>();
+    private List<GameObject> _arrowList = new List<GameObject>();
     private Animator animator;
     private int animatorHash = Animator.StringToHash("Vent");
 
@@ -38,17 +38,35 @@ public class Vent : MonoBehaviourPun
             GameObject arrow = Instantiate(_dirArrowPrefab, transform.position, transform.rotation);
 
             // 화살표 다른 벤트 바라보기
+            //Vector2 newPos = vent.transform.position - arrow.transform.position;
+            //float rotZ = Mathf.Atan2(newPos.y, newPos.x) * Mathf.Rad2Deg;
+
+
+            // 화살표 다른 벤트 바라보기
             Vector2 newPos = vent.transform.position - arrow.transform.position;
-            float rotZ = Mathf.Atan2(newPos.y, newPos.x) * Mathf.Rad2Deg;
+
+            // 기준 벡터 (1, 0)
+            Vector2 referenceVector = new Vector2(1, 0);
+
+            // 내적 계산
+            float dotProduct = Vector2.Dot(newPos.normalized, referenceVector);
+            float rotZ = Mathf.Acos(dotProduct) * Mathf.Rad2Deg;
+
+            // y좌표가 음수일 때 각도를 조정
+            if (newPos.y < 0)
+            {
+                rotZ = 360 - rotZ;
+            }
+
             arrow.transform.rotation = Quaternion.Euler(0, 0, rotZ);
             arrow.transform.SetParent(_canvas);
             arrow.transform.position += arrow.transform.right * 2 ;
 
             // 버튼 이벤트 등록
             Button arrowButton = arrow.GetComponentInChildren<Button>();
-            arrowButton.onClick.AddListener(() => ChangeVent(arrow));
+            arrowButton.onClick.AddListener(() => ChangeVent(vent));
 
-            _arrowDic.Add(arrow, vent);
+            _arrowList.Add(arrow);
            
         }
 
@@ -64,11 +82,11 @@ public class Vent : MonoBehaviourPun
     /// </summary>
     public void Exit(ActorType actorType)
     {
-        foreach (GameObject arrow in _arrowDic.Keys)
+        foreach (GameObject arrow in _arrowList)
         {
             Destroy(arrow.gameObject);
         }
-        _arrowDic.Clear();
+        _arrowList.Clear();
 
         //RPC
         if (actorType == ActorType.Enter)
@@ -81,10 +99,10 @@ public class Vent : MonoBehaviourPun
     /// 벤트 변경 이벤트 호출
     /// </summary>
     /// <param name="arrow"></param>
-    private void ChangeVent(GameObject arrow)
+    private void ChangeVent(Vent vent)
     {
-        Vent nextVent= _arrowDic[arrow];
-        OnChangeVentEvent?.Invoke(nextVent);
+        //Vent nextVent= _arrowList[arrow];
+        OnChangeVentEvent?.Invoke(vent);
     }
 
     [PunRPC]

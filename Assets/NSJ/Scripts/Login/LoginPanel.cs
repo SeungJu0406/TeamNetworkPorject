@@ -120,7 +120,7 @@ public class LoginPanel : BaseUI
                     if (isEmailVerified)
                     {
                         // 이메일 인증 되었을 시 유저 정보 얻어온 후 -> 서버 연결
-                        GetUserDate();
+                        GetUserData();
                     }
                     else
                     {
@@ -135,7 +135,7 @@ public class LoginPanel : BaseUI
     /// <summary>
     /// 유저 데이터 얻기
     /// </summary>
-    private void GetUserDate()
+    private void GetUserData()
     {
         DatabaseReference userRef = BackendManager.Auth.CurrentUser.UserId.GetUserDataRef();
 
@@ -213,7 +213,7 @@ public class LoginPanel : BaseUI
         }
         //로딩화면 On
         LoadingBox.StartLoading();
-        BackendManager.Auth.CreateUserWithEmailAndPasswordAsync(email, password).
+        BackendManager.Auth.CreateUserWithEmailAndPasswordAsync(email, password).   
             ContinueWithOnMainThread(task =>
             {
 
@@ -235,7 +235,7 @@ public class LoginPanel : BaseUI
                     SetUserInfo();
                     // 박스 변경
                     ChangeBox(Box.SendSuccess);
-                    // TODO : 이메일 인증 필요
+                    // 이메일 인증 필요
                     SendEmailVerify();
                 }
             });
@@ -310,7 +310,7 @@ public class LoginPanel : BaseUI
                     {
                         // 서버 연결
                         LoadingBox.StartLoading();
-                        GetUserDate();
+                        GetUserData();
                     }
                     else
                     {
