@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainCreateRoomBox : BaseUI
+public class MainCreateRoomBox : MainBox
 {
     [SerializeField] int _minPlayer = 5;
     [SerializeField] int _maxPlayer = 12;
@@ -121,7 +121,7 @@ public class MainCreateRoomBox : BaseUI
     {
         _createPlayerCountSlider.onValueChanged.AddListener(UpdatePlayerCount);
         _createRoomOpenSlider.onValueChanged.AddListener(UpdateIsVisible);
-        GetUI<Button>("CreateBackButton").onClick.AddListener(() => MainPanel.ChangeBox(MainPanel.Box.Join));
+        GetUI<Button>("CreateBackButton").onClick.AddListener(() => Panel.ChangeBox(MainPanel.Box.Join));
         GetUI<Button>("CreateBackButton").onClick.AddListener(() => SoundManager.SFXPlay(SoundManager.Data.ButtonOff));
 
         GetUI<Button>("CreateRoomButton").onClick.AddListener(CreateRoom);

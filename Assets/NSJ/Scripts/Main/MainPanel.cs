@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -9,8 +10,6 @@ using UnityEngine.UI;
 
 public class MainPanel : MonoBehaviour 
 {
-    public static MainPanel Instance;
-
     [SerializeField] private Button _settingButton;
 
     public enum Box { Main, Quick, Join, Create, Size }
@@ -18,22 +17,18 @@ public class MainPanel : MonoBehaviour
     [System.Serializable]
     struct BoxStruct
     {
-        public GameObject Main;
-        public GameObject Quick; 
-        public GameObject Join;
-        public GameObject Create;
+        public MainBox Main;
+        public MainBox Quick; 
+        public MainBox Join;
+        public MainBox Create;
     }
     [SerializeField] BoxStruct _boxStruct;
 
-    private GameObject[] _boxs = new GameObject[(int)Box.Size];
-    private static GameObject[] s_boxs { get { return Instance._boxs; } set { Instance._boxs = value; } }
-
-    private StringBuilder _sb = new StringBuilder();
+    private MainBox[] _boxs = new MainBox[(int)Box.Size];
 
 
     private void Awake()
     {
-        InitSingleTon();
         Init();
     }
 
@@ -74,23 +69,23 @@ public class MainPanel : MonoBehaviour
     /// <summary>
     /// UI 박스 변경
     /// </summary>
-    public static void ChangeBox(Box box)
+    public void ChangeBox(Box box)
     {
         LoadingBox.StopLoading();
 
-        for (int i = 0; i < s_boxs.Length; i++)
+        for (int i = 0; i < _boxs.Length; i++)
         {
-            if (s_boxs[i] == null)
+            if (_boxs[i] == null)
                 return;
 
             if (i == (int)box) // 바꾸고자 하는 박스만 활성화
             {
-                s_boxs[i].SetActive(true);
+                _boxs[i].gameObject.SetActive(true);
                 //ClearBox(box); // 초기화 작업도 진행
             }
             else
             {
-                s_boxs[i].SetActive(false);
+                _boxs[i].gameObject.SetActive(false);
             }
         }
     }
@@ -100,11 +95,18 @@ public class MainPanel : MonoBehaviour
     /// </summary>
     private void Init()
     {
-        _boxs[(int)Box.Main] = _boxStruct.Main;
-        _boxs[(int)Box.Quick] = _boxStruct.Quick;
-        _boxs[(int)Box.Join] = _boxStruct.Join;
-        _boxs[(int)Box.Create] = _boxStruct.Create;
+        InitBoxs(_boxStruct.Main, Box.Main );
+        InitBoxs(_boxStruct.Quick, Box.Quick );
+        InitBoxs(_boxStruct.Join, Box.Join );
+        InitBoxs(_boxStruct.Create, Box.Create );
     }
+
+    private void InitBoxs(MainBox box, Box index)
+    {
+        _boxs[(int)index] = box;
+        box.Panel = this;
+    }
+
 
     /// <summary>
     /// 이벤트 구독
@@ -114,20 +116,4 @@ public class MainPanel : MonoBehaviour
         _settingButton.onClick.AddListener(() => OptionPanel.SetActiveOption(true));
         _settingButton.onClick.AddListener(() => SoundManager.SFXPlay(SoundManager.Data.ButtonClick));
     }
-
-    /// <summary>
-    /// 싱글톤 지정
-    /// </summary>
-    private void InitSingleTon()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
 }

@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainMainBox :BaseUI
+public class MainMainBox :MainBox
 {
 
     // MainBox
@@ -61,10 +61,10 @@ public class MainMainBox :BaseUI
         GetUI<Button>("MainLogOutButton").onClick.AddListener(LogOut);
         GetUI<Button>("MainLogOutButton").onClick.AddListener(() => SoundManager.SFXPlay(SoundManager.Data.ButtonOff));
 
-        GetUI<Button>("MainQuickMatchButton").onClick.AddListener(() => MainPanel.ChangeBox(MainPanel.Box.Quick));
+        GetUI<Button>("MainQuickMatchButton").onClick.AddListener(() => Panel.ChangeBox(MainPanel.Box.Quick));
         GetUI<Button>("MainQuickMatchButton").onClick.AddListener(() => SoundManager.SFXPlay(SoundManager.Data.ButtonClick));
 
-        GetUI<Button>("MainJoinButton").onClick.AddListener(() => MainPanel.ChangeBox(MainPanel.Box.Join));
+        GetUI<Button>("MainJoinButton").onClick.AddListener(() => Panel.ChangeBox(MainPanel.Box.Join));
         GetUI<Button>("MainJoinButton").onClick.AddListener(() => SoundManager.SFXPlay(SoundManager.Data.ButtonClick));
     }
 }
