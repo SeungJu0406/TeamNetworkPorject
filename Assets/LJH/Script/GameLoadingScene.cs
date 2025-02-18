@@ -3,7 +3,6 @@ using Photon.Pun.UtilityScripts;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 public class GameLoadingScene : MonoBehaviourPun
 {
@@ -25,10 +24,13 @@ public class GameLoadingScene : MonoBehaviourPun
 
     public event UnityAction OnStartGameEvent;
 
-    public static bool IsTest { get 
+    public static bool IsTest
+    {
+        get
         {
             return NSJ_Test.TestGame.Instance == null ? false : true;
-        } }
+        }
+    }
 
     public static GameLoadingScene Instance;
     private void Awake()
@@ -41,22 +43,22 @@ public class GameLoadingScene : MonoBehaviourPun
         else
         {
             Destroy(gameObject); // 기존 인스턴스가 있으면 새로 생성된 객체를 제거
-        }       
+        }
     }
     private void Start()
     {
-        
+
     }
 
     public void GameStart()
-    { 
+    {
         StartCoroutine(GameStartDelaying());
     }
 
     IEnumerator GameStartDelaying()
     {
         // 게임 시작 전 플레이어 오브젝트 비우기
-        photonView.RPC(nameof(DestroyMyPlayer),RpcTarget.All);
+        photonView.RPC(nameof(DestroyMyPlayer), RpcTarget.All);
         yield return 2f.GetDelay();
         // 게임씬으로 씬전환
         SceneChanger.LoadLevel(1);
@@ -86,7 +88,7 @@ public class GameLoadingScene : MonoBehaviourPun
     /// </summary>
     IEnumerator GameOverRoutine()
     {
-        if(IsTest)
+        if (IsTest)
             yield break;
 
         // 로비 씬에서는 판별 금지
@@ -105,7 +107,7 @@ public class GameLoadingScene : MonoBehaviourPun
 
             // 미션승리로 인한 게임 종료시 코루틴 끊기
             if (GameOverMission())
-                yield break;    
+                yield break;
             yield return null;
         }
     }
@@ -233,16 +235,12 @@ public class GameLoadingScene : MonoBehaviourPun
     /// </summary>
     /// <returns></returns>
     private Vector3 GetRandomSpawnPoint()
-    {      
-        // 배열 입력이 안됬을때 리스폰 포인트 저장)
-        if (_spawnPoints == null)
+    {
+        GameObject obj = GameObject.FindGameObjectWithTag("Respawn");
+        _spawnPoints = new Transform[obj.transform.childCount];
+        for (int i = 0; i < _spawnPoints.Length; i++)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag("Respawn");         
-            _spawnPoints = new Transform[obj.transform.childCount];
-            for (int i = 0; i < _spawnPoints.Length; i++)
-            {
-                _spawnPoints[i] = obj.transform.GetChild(i);
-            }
+            _spawnPoints[i] = obj.transform.GetChild(i);
         }
 
         int x = Random.Range(0, _spawnPoints.Length);

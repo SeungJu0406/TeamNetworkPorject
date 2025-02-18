@@ -269,8 +269,8 @@ public class PlayerDataContainer : MonoBehaviourPun
         //    }
         //}
 
-        // 5명당 오리 한명씩, 5의 배수 초과부터 ex) 6명 2명
-        count = (PhotonNetwork.CurrentRoom.MaxPlayers % 5) != 0 ? PhotonNetwork.CurrentRoom.MaxPlayers / 5 + 1 : PhotonNetwork.CurrentRoom.MaxPlayers / 5;
+        // 5명당 오리 한명씩, 5의 배수 초과부터 ex) 8명 2명
+        count = (PhotonNetwork.CurrentRoom.MaxPlayers % 7) != 0 ? PhotonNetwork.CurrentRoom.MaxPlayers / 7 + 1 : PhotonNetwork.CurrentRoom.MaxPlayers / 7;
         for (int i = 0; i < count; i++)
         {
             int x;

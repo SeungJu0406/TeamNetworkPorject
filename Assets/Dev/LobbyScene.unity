@@ -20071,8 +20071,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08a77f6cc06a6a4fae6dde9224c68d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minPlayer: 1
-  _maxPlayer: 16
+  _minPlayer: 4
+  _maxPlayer: 12
 --- !u!114 &992349189
 MonoBehaviour:
   m_ObjectHideFlags: 0

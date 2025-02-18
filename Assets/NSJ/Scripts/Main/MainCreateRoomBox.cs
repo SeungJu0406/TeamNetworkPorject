@@ -4,10 +4,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainCreateRoomBox : BaseUI
+public class MainCreateRoomBox : MainBox
 {
     [SerializeField] int _minPlayer = 5;
-    [SerializeField] int _maxPlayer = 16;
+    [SerializeField] int _maxPlayer = 12;
 
     private TMP_InputField _createNickNameInput => GetUI<TMP_InputField>("CreateNickNameInput");
     private TMP_Text _createPlayerCountText => GetUI<TMP_Text>("CreatePlayerCountText");
@@ -107,9 +107,13 @@ public class MainCreateRoomBox : BaseUI
         _createPrivacyCheck.SetActive(false);
     }
     private void Init()
-    {        
+    {
         // TODO : 추후 게임매니저 같은곳에서 최대최소 인원 연동해서 가져와야할 필요가 있음
+#if UNITY_EDITOR
+        _createPlayerCountSlider.minValue = 1;
+#else
         _createPlayerCountSlider.minValue = _minPlayer;
+#endif
         _createPlayerCountSlider.maxValue = _maxPlayer;
 
     }
@@ -117,7 +121,7 @@ public class MainCreateRoomBox : BaseUI
     {
         _createPlayerCountSlider.onValueChanged.AddListener(UpdatePlayerCount);
         _createRoomOpenSlider.onValueChanged.AddListener(UpdateIsVisible);
-        GetUI<Button>("CreateBackButton").onClick.AddListener(() => MainPanel.ChangeBox(MainPanel.Box.Join));
+        GetUI<Button>("CreateBackButton").onClick.AddListener(() => Panel.ChangeBox(MainPanel.Box.Join));
         GetUI<Button>("CreateBackButton").onClick.AddListener(() => SoundManager.SFXPlay(SoundManager.Data.ButtonOff));
 
         GetUI<Button>("CreateRoomButton").onClick.AddListener(CreateRoom);

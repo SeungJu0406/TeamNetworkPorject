@@ -56,6 +56,7 @@ public class VoteManager : MonoBehaviourPunCallbacks
     public void VotePlayerRPC(int index, int votePlayer)
     {
         _voteCounts[index]++;
+        _voteData.VoteCount++;
         _voteSignImage[votePlayer].SetActive(true);
         SoundManager.SFXPlay(SoundManager.Data.Vote);
         Debug.Log($"{index}번 플레이어 득표수 {_voteCounts[index]} ");
@@ -74,6 +75,7 @@ public class VoteManager : MonoBehaviourPunCallbacks
     public void OnClickSkipRPC(int votePlayer)
     {
         _voteData.SkipCount++;
+        _voteData.VoteCount++;
         _voteSignImage[votePlayer].SetActive(true);
         SoundManager.SFXPlay(SoundManager.Data.Vote);
         Debug.Log($" 스킵 수 : {_voteData.SkipCount}");

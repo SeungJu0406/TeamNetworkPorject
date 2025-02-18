@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainQuickBox : BaseUI
+public class MainQuickBox : MainBox
 {
     private TMP_InputField _quickNickNameInput => GetUI<TMP_InputField>("QuickNickNameInput");
     private GameObject _quickColorBox => GetUI("QuickColorBox");
@@ -82,7 +82,7 @@ public class MainQuickBox : BaseUI
         GetUI<Button>("QuickStartButton").onClick.AddListener(StartRandomMatch);
         GetUI<Button>("QuickStartButton").onClick.AddListener(() => SoundManager.SFXPlay(SoundManager.Data.ButtonClick));
 
-        GetUI<Button>("QuickBackButton").onClick.AddListener(() => MainPanel.ChangeBox(MainPanel.Box.Main));
+        GetUI<Button>("QuickBackButton").onClick.AddListener(() => Panel.ChangeBox(MainPanel.Box.Main));
         GetUI<Button>("QuickBackButton").onClick.AddListener(() => SoundManager.SFXPlay(SoundManager.Data.ButtonOff));
     }
 }

@@ -37,6 +37,15 @@ public class RoomPanel : BaseUI
             UpdateChangeRoom();
         }
 
+        //foreach (Player player in PhotonNetwork.PlayerList)
+        //{
+        //    if (PhotonNetwork.LocalPlayer.NickName.Trim() == player.NickName.Trim())
+        //    {
+        //        LeftRoom();
+        //        return;
+        //    }
+        //}
+
         SubscribesEvent();
     }
 

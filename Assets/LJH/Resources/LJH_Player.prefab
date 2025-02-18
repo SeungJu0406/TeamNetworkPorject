@@ -125,7 +125,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 9600
-  KillCoolDown: 10
+  KillCoolDown: 30
   _remainCoolDown: 0
   IdleBody: {fileID: 2878660863419640593}
   Ghost: {fileID: 2396923184650015772}

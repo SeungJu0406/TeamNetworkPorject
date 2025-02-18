@@ -70,6 +70,8 @@ public class VotePanel : MonoBehaviourPunCallbacks
         {
             SpawnPlayerPanel();
         }
+
+        _voteData.OnAllVotePlayerEvent += CheckAllPlayerVote;
     }
 
     public override void OnConnectedToMaster()
@@ -231,5 +233,10 @@ public class VotePanel : MonoBehaviourPunCallbacks
     {
         yield return 2f.GetDelay();
         SpawnPlayerPanel();
+    }
+
+    private void CheckAllPlayerVote()
+    {
+        _voteData.VoteTimeCount = 3f;
     }
 }

@@ -143,6 +143,7 @@ public static partial class Util
     {
         DatabaseReference root = BackendManager.DataBase.RootReference;
         DatabaseReference userRef = root.Child("UserData").Child(userId);
+
         return userRef;
     }
 
